@@ -15,9 +15,16 @@
 //    hello $SOMEPARAM
 package main
 
-import "fmt"
+import (
+	"flag"
+	"fmt"
+)
 
 func main() {
 
 	fmt.Printf("bcctl utiliy started\n")
+	labelPtr := flag.String("labels", "", "Prometheus labels to be used inside a query")
+	flag.Parse()
+
+	fmt.Printf("labelPtr: %s\n", *labelPtr)
 }
