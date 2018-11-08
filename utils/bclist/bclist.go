@@ -44,11 +44,45 @@ import (
 	"fmt"
 )
 
+type job struct {
+	job   string // job name
+	value int    // number of such jobs configured in Prometheus
+}
+
 func main() {
+	var nodeJob job
+	nodeJob.job = "node"
+	nodeJob.value = 10
+
+	//Declare a variable of type job and init using
+	// a struct literal
+	haproxyJob := job{
+		job:   "haproxy",
+		value: 3,
+	}
 
 	fmt.Printf("bcctl utiliy started\n")
 	labelPtr := flag.String("labels", "", "Prometheus labels to be used inside a query")
 	flag.Parse()
 
 	fmt.Printf("labelPtr: %s\n", *labelPtr)
+	fmt.Printf("%+v\n", nodeJob)
+	fmt.Printf("%+v\n", haproxyJob)
+
+	fmt.Println("Job", haproxyJob.job)
+
+	//Declare a variable of anonymous type and init
+	// using a structure literal
+	wcaRole := struct {
+		role  string
+		value int
+		job   job
+	}{
+		role:  "ext-traic",
+		value: 2,
+		job:   haproxyJob,
+	}
+
+	fmt.Printf("%+v\n", wcaRole)
+	fmt.Println("Job:", wcaRole.job.job, "Role:", wcaRole.role)
 }
