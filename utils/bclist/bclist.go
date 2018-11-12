@@ -42,6 +42,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mirkar/bcmanager/prometheus"
 )
 
 type job struct {
@@ -85,4 +86,29 @@ func main() {
 
 	fmt.Printf("%+v\n", wcaRole)
 	fmt.Println("Job:", wcaRole.job.job, "Role:", wcaRole.role)
+
+	prometheus.Init()
+	fmt.Println(prometheus.JobNames)
+
+	// Using value semantic form for range.
+	for _, v := range prometheus.JobNames {
+		fmt.Printf("v[%s]\n", v)
+	}
+
+	for i, v := range prometheus.GetJobsNames() {
+		fmt.Printf("i=[%v] v[%s]\n", i, v)
+	}
+
+	// Using pointer semantic form for range.
+	for i := range prometheus.JobNames {
+		fmt.Printf("v[%s]\n", prometheus.JobNames[i])
+	}
+
+	for i := range prometheus.GetJobsNames() {
+		fmt.Printf("v[%s]\n", prometheus.GetJobsNames()[i])
+	}
+
+	myhost := prometheus.Host{Name: "bada"}
+	myhost.Value = 7
+
 }
