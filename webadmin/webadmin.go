@@ -17,7 +17,11 @@ var handlerApiV2 http.Handler
 func main() {
 	port := 8082
 
-	http.HandleFunc("/", staticContentHandler)
+	//reacthandler := http.FileServer(http.Dir("./static/react"))
+	http.Handle("/reactdemo/", http.StripPrefix("/reactdemo/", http.FileServer(http.Dir("./static/react"))))
+
+	http.Handle("/", http.FileServer(http.Dir("./static")))
+
 	http.HandleFunc("/app/", dynamicContentHandler)
 
 	handlerApiV1 = apiV1Handler{}
@@ -28,11 +32,6 @@ func main() {
 
 	log.Printf("Server starting on port %v\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
-}
-
-func staticContentHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Static content handlerApiV1\n")
-	//handlerApiV1.ServeHTTP(w, r)
 }
 
 func dynamicContentHandler(w http.ResponseWriter, r *http.Request) {
